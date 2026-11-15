@@ -1,0 +1,10 @@
+rules_version = '2';
+// Demo rules for LessonForge: open read/write on the app's collections only.
+// Tighten (e.g. add Firebase Auth) before real production use.
+service cloud.firestore {
+  match /databases/{db}/documents {
+    match /{col}/{id} {
+      allow read, write: if col in ['runs','attempts','rejection_log','learned_guidance','rubric_suggestions'];
+    }
+  }
+}

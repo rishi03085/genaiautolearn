@@ -1,0 +1,26 @@
+# Netlify hosting for LessonForge (TanStack Start built with Nitro).
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # Tell Nitro to output a Netlify-ready server (functions + static files).
+  NITRO_PRESET = "netlify"
+
+# Long LLM calls: keep server functions near the max sync timeout.
+[functions]
+  node_bundler = "esbuild"
+
+# Cache hashed static assets forever.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
